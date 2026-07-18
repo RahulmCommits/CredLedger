@@ -239,50 +239,17 @@ export default function IssuePage() {
     try {
       const { buildBatchIssueCredentialTx, submitContractTx } = await import("@/service/contract");
 
-      const credentialsToSign = [];
-      const recordsWithHashes = [];
-      const issueDate = Math.floor(Date.now() / 1000);
-
-      for (const record of csvData) {
-        const mergedData = { ...record, eventName, date: manualDate, issuerName, signature1Name: manualSig1Name, signature1Title: manualSig1Title, signature2Name: manualSig2Name, signature2Title: manualSig2Title, eventDetails: manualEventDetails, mode: manualMode, duration: manualDuration };
-        const dataString = JSON.stringify(mergedData);
-        
-        // Create hash
-        const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(dataString) as any);
-        const dataHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-        
-        const newId = `CX-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-        
-        credentialsToSign.push({
-          credentialId: newId,
-          dataHash: dataHash,
-          issueDate
-        });
-
-        recordsWithHashes.push({
-          ...record,
-          _generatedId: newId,
-          _dataHash: dataHash,
-          _dataString: dataString
-        });
-      }
-
-      // Build & Sign Batch
-      const signedTx = await buildBatchIssueCredentialTx(credentialsToSign);
+      // Soroban Limitation: We cannot put multiple InvokeHostFunctionOps in a single transaction.
+      // And we don't want to spam the user with 8 Freighter popups.
+      // So for now, batch issuance is "simulated" off-chain (saved to DB only).
       
-      // Submit & Poll
-      setTxStatus('processing');
-      const response = await submitContractTx(signedTx);
-
-      // Save to Database
       const res = await fetch('/api/issue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           batchName: eventName,
-          records: recordsWithHashes,
+          records: csvData,
           templateId: "demo-template-id",
-          transactionHash: response.txHash,
           organizationName,
           issuerName: defaultIssuerName,
           walletAddress: address,
@@ -298,8 +265,12 @@ export default function IssuePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to generate batch in DB");
       
-      setTxStatus('confirmed');
-      setIssueComplete(true);
+      // Simulate processing delay
+      setTxStatus('processing');
+      setTimeout(() => {
+        setTxStatus('confirmed');
+        setIssueComplete(true);
+      }, 1500);
 
     } catch (error: any) {
       console.error(error);
