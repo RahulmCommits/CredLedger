@@ -75,43 +75,97 @@ CredLedger introduces a **Verifiable Digital Credential Passport**. Every certif
 
 ---
 
-## 📸 Project Showcase & Deliverables
+## 📁 Project Directory Structure
 
-### 1. Wallet Setup, Connection & XLM Balance (Level 1)
-![Wallet Connected & Balance Displayed](./demo/img/Hero-wallet-connected.png)
-
-### 2. Multi-Wallet Integration (Level 2)
-![Multi-Wallet Support](./demo/img/multi-wallet.png)
-
-### 3. Transaction Flow & Success Feedback (Level 1 & 2)
-![Successful Transaction Toast](./demo/img/succesful-issue-toast.png)
-
-### 4. Mobile Responsive UI (Level 3)
-![Mobile UI Navigation](./demo/img/mobile-UI-1.png)
-![Mobile Dashboard View](./demo/img/mobile-ui-2.png)
-
-### 5. Passing Tests (Level 3)
-![Vitest Passing Tests](./demo/img/passed-test.png)
-
-### 6. CI/CD Pipeline (Level 3)
-![GitHub Actions CI/CD Pipeline](./demo/img/CI-CD.png)
-
-### 7. Custom Dashboard & UI/UX Design
-![Dashboard in Night Mode](./demo/img/dasboard-in-night-mode.png)
-
-### 8. The Final Product (Verifiable Certificate)
-![An Issued Certificate](./demo/img/an-issued-certificate.png)
-
-### 9. Real-time Verification Page
-![Demo Verification](./demo/img/demo-verification.png)
+```text
+CredLedger/
+├── contracts/                  # Soroban Smart Contracts Workspace
+│   ├── contracts/cred-issuer/  # Contract 1: Credential Issuer Logic
+│   ├── contracts/cred-registry/# Contract 2: Registry for Verifiable Credentials
+│   ├── Cargo.toml              # Rust Workspace configuration
+│   └── deploy.sh               # Bash script for testnet deployment
+├── src/                        # Next.js Frontend & Backend Application
+│   ├── app/                    # Next.js App Router (Pages & API Routes)
+│   ├── components/             # Reusable UI elements (Tailwind, Lucide Icons)
+│   ├── lib/                    # Shared utilities (Prisma singleton, utils)
+│   └── store/                  # Zustand global state (Wallet connections)
+├── prisma/                     # PostgreSQL Database Schema
+├── public/                     # Static assets
+├── demo/img/                   # Screenshots for documentation
+├── package.json                # NPM Dependencies
+└── README.md                   # Project Documentation
+```
 
 ---
 
-## ⚙️ Contract Details & Verifiable Transactions
+## 🛡️ Contract Addresses & Verifiable Links
 
-- **Network**: Stellar Testnet
-- **Smart Contract ID**: `CD4QVW5BLFJU7ZELFVAVZJO3O4GDE3DEYZM5HN5MMMU7D62FLEAPEPIJ`
-- **Example Transaction Hash (Stellar Expert)**: `1d9120501d8ccc5a8470a16b3f545a6c117b9b09a0670d8a571f84b64be6b7b2` (Check on [Stellar Expert Explorer](https://stellar.expert/explorer/testnet/contract/CD4QVW5BLFJU7ZELFVAVZJO3O4GDE3DEYZM5HN5MMMU7D62FLEAPEPIJ))
+The contracts have been successfully deployed and initialized on the Stellar Testnet!
+
+*   **Verifiable Live App**: [https://cred-ledger-three.vercel.app/](https://cred-ledger-three.vercel.app/)
+*   **Credential Registry Contract**: [`CD4QVW5BLFJU7ZELFVAVZJO3O4GDE3DEYZM5HN5MMMU7D62FLEAPEPIJ`](https://stellar.expert/explorer/testnet/contract/CD4QVW5BLFJU7ZELFVAVZJO3O4GDE3DEYZM5HN5MMMU7D62FLEAPEPIJ)
+*   **Network**: Stellar Testnet
+
+**Recent Transactions:**
+*   **Contract Call (Issue Credential)**: [1d9120501d8ccc5a8470a16b3f545a6c117b9b09a0670d8a571f84b64be6b7b2](https://stellar.expert/explorer/testnet/tx/1d9120501d8ccc5a8470a16b3f545a6c117b9b09a0670d8a571f84b64be6b7b2)
+
+---
+
+## 📸 Platform Previews
+
+### 🌟 Hero & Dashboard
+*A sleek, professional dashboard. Connect your Freighter wallet to sign and submit directly to the Stellar network.*
+**(✅ Showcasing Wallet Connection State & Live XLM Balance Retrieval)**
+<div align="center">
+  <img src="demo/img/Hero-wallet-connected.png" alt="Hero Dashboard" width="800"/>
+</div>
+
+### 🧰 Multi-Wallet Support
+*Seamlessly connect using your preferred Stellar wallet via StellarWalletsKit.*
+**(✅ Supporting Multiple Wallet Provider Options)**
+<div align="center">
+  <img src="demo/img/multi-wallet.png" alt="Multi Wallet Options" width="800"/>
+</div>
+
+### 📜 Transaction Flow & Success Feedback
+*Issue credentials directly on-chain. The system generates unique, verifiable QR codes and confirms via toast notifications.*
+**(✅ Showcasing a Successful Testnet Transaction with Real-time User Feedback)**
+<div align="center">
+  <img src="demo/img/succesful-issue-toast.png" alt="Batch Registry" width="800"/>
+</div>
+
+### 🔍 Real-time Verification Page
+*Anyone can scan the QR code to instantly read the entire credential provenance and verify authenticity via the Stellar ledger.*
+<div align="center">
+  <img src="demo/img/demo-verification.png" alt="QR Scan Results" width="800"/>
+  <br/>
+  <br/>
+  <img src="demo/img/an-issued-certificate.png" alt="Issued Certificate" width="800"/>
+</div>
+
+### 📱 Fully Mobile Responsive
+*The entire application, including complex dashboards, sidebars, and tables, is completely optimized for seamless mobile usage.*
+**(✅ Built with a Fully Mobile-Responsive Architecture)**
+<div align="center">
+  <img src="demo/img/mobile-UI-1.png" alt="Mobile View 1" width="300"/>
+  <img src="demo/img/mobile-ui-2.png" alt="Mobile View 2" width="300"/>
+</div>
+
+### 🚀 CI/CD Pipeline & Automated Testing
+*Automated GitHub Actions trigger on every push, performing full frontend validation. Comprehensive Vitest tests ensure platform stability.*
+**(✅ Fully Automated CI/CD Deployment Pipeline via GitHub Actions with 3+ Passing Tests)**
+<div align="center">
+  <img src="demo/img/passed-test.png" alt="Test Suite" width="400"/>
+  <br/>
+  <br/>
+  <img src="demo/img/CI-CD.png" alt="CI/CD Pipeline" width="800"/>
+</div>
+
+### 🎨 Custom Dashboard in Night Mode
+*Premium UI/UX design showcasing a high-quality Night Mode integration.*
+<div align="center">
+  <img src="demo/img/dasboard-in-night-mode.png" alt="Night Mode" width="800"/>
+</div>
 
 ---
 
