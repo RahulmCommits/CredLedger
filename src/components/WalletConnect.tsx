@@ -43,8 +43,8 @@ export default function WalletConnect() {
         <div className="flex items-center gap-2 sm:gap-3 bg-surface-container-low rounded-full px-2 py-1 sm:px-3 sm:py-1.5 border border-outline-variant shadow-sm transition-all hover:border-outline">
           <div className="hidden sm:block w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
           {balance && (
-            <div className="hidden sm:flex items-center border-r border-outline-variant pr-2 mr-1">
-              <span className="font-mono text-[12px] font-medium text-pure-black">
+            <div className="flex items-center border-r border-outline-variant pr-2 mr-1">
+              <span className="font-mono text-[10px] sm:text-[12px] font-medium text-pure-black">
                 {balance} XLM
               </span>
             </div>
