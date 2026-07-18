@@ -6,8 +6,8 @@ export async function GET() {
     // 1. Get total credentials issued
     const totalIssued = await prisma.certificate.count();
 
-    // 2. Mock active issuers since we aren't tracking issuers in DB yet (only wallet addresses)
-    const activeIssuers = 3; 
+    // 2. Count active issuers (organizations)
+    const activeIssuers = await prisma.organization.count();
 
     // 3. Get issuance volume over the last 7 days
     const now = new Date();
