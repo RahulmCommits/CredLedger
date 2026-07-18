@@ -698,25 +698,39 @@ export default function IssuePage() {
             )}
 
             {issueMode === 'batch' && (
-              <button 
-                onClick={handleBatchIssue}
-                disabled={(txStatus !== 'idle') || csvData.length === 0 || !isConnected || !isProfileComplete}
-                className="w-full mt-6 bg-primary text-pure-white font-dot text-[16px] uppercase py-4 rounded-none hover:bg-inverse-surface transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 duration-200"
-              >
-                {!isConnected ? "CONNECT WALLET TO ISSUE" : 
-                 !isProfileComplete ? "COMPLETE PROFILE FIRST" :
-                 (txStatus !== 'idle') ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    ISSUING {csvData.length} CREDENTIALS
-                  </>
-                ) : (
-                  <>
-                    <FileText className="w-5 h-5" />
-                    ISSUE {csvData.length > 0 ? csvData.length : ""} ON SOROBAN
-                  </>
+              <div className="mt-6">
+                {txStatus !== 'idle' && (
+                  <div className="mb-4 space-y-2 text-sm font-mono p-4 border border-outline-variant bg-surface-container-lowest">
+                    {txStatus === 'pending' && <p className="text-primary animate-pulse">Wallet signature pending...</p>}
+                    {txStatus === 'processing' && <p className="text-[#9333EA] animate-pulse">Processing on Soroban RPC...</p>}
+                    {txStatus === 'failed' && (
+                      <div className="text-signal-red">
+                        <p>✖ Failed: {txError}</p>
+                        <button onClick={() => setTxStatus('idle')} className="mt-2 text-xs border border-signal-red px-2 py-1 hover:bg-signal-red hover:text-white transition-colors">Try Again</button>
+                      </div>
+                    )}
+                  </div>
                 )}
-              </button>
+                <button 
+                  onClick={handleBatchIssue}
+                  disabled={txStatus === 'pending' || txStatus === 'processing' || csvData.length === 0 || !isConnected || !isProfileComplete}
+                  className="w-full bg-primary text-pure-white font-dot text-[16px] uppercase py-4 rounded-none hover:bg-inverse-surface transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 duration-200"
+                >
+                  {!isConnected ? "CONNECT WALLET TO ISSUE" : 
+                   !isProfileComplete ? "COMPLETE PROFILE FIRST" :
+                   (txStatus === 'pending' || txStatus === 'processing') ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      {txStatus === 'pending' ? 'SIGNING' : 'ISSUING'} {csvData.length} CREDENTIALS
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="w-5 h-5" />
+                      ISSUE {csvData.length > 0 ? csvData.length : ""} ON SOROBAN
+                    </>
+                  )}
+                </button>
+              </div>
             )}
           </div>
         )}
