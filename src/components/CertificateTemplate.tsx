@@ -159,7 +159,7 @@ export const CertificateTemplate: React.FC<CertificateTemplateProps> = ({
             </div>
           </div>
 
-          <div className="text-[9px] font-bold text-[#0B2046] uppercase tracking-wider mb-2 text-center">OR ENTER CREDENTIAL ID</div>
+          <div className="text-[9px] font-bold text-[#0B2046] uppercase tracking-wider mb-2 text-center">CERTIFICATE ID</div>
           <div style={{ borderColor: "#d1d5db", color: "#374151", backgroundColor: "#ffffff" }} className="w-full border py-1.5 px-2 text-center text-[10px] rounded-md tracking-widest font-mono truncate">
             {credentialId || "CX-2025"}
           </div>

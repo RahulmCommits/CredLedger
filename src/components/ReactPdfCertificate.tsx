@@ -432,7 +432,7 @@ export const ReactPdfCertificate: React.FC<ReactPdfCertificateProps> = ({
           <View style={styles.qrCodeBox}>
             {qrDataUrl ? <Image source={qrDataUrl} style={styles.qrCodeImg} /> : null}
           </View>
-          <Text style={styles.scanLabel}>OR ENTER CREDENTIAL ID</Text>
+          <Text style={styles.scanLabel}>CERTIFICATE ID</Text>
           <View style={styles.credIdBox}>
             <Text style={styles.credIdText}>{credentialId}</Text>
           </View>
