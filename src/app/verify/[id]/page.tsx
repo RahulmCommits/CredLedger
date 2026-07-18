@@ -39,7 +39,9 @@ export default async function VerifyPage({ params }: { params: Promise<{ id: str
     year: 'numeric'
   });
 
-  const stellarExpertUrl = `https://stellar.expert/explorer/testnet/tx/${certificate.dataHash}`;
+  const stellarExpertUrl = certificate.transactionHash 
+    ? `https://stellar.expert/explorer/testnet/tx/${certificate.transactionHash}` 
+    : `https://stellar.expert/explorer/testnet/tx/${certificate.dataHash}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex flex-col relative">

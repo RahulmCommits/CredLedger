@@ -55,6 +55,49 @@ export async function buildIssueCredentialTx(
   return response.signedTxXdr || (typeof response === 'string' ? response : (response as any).signedXDR);
 }
 
+export async function buildBatchIssueCredentialTx(
+  credentials: { credentialId: string; dataHash: string; issueDate: number }[]
+) {
+  const { address } = useWalletStore.getState();
+  if (!address) throw new Error("Wallet not connected");
+
+  // Load account
+  const account = await horizon.loadAccount(address);
+  const contract = new Contract(REGISTRY_ID);
+
+  let txBuilder = new TransactionBuilder(account, { fee: (100000 * credentials.length).toString(), networkPassphrase });
+
+  for (const cred of credentials) {
+    const args = [
+      new Address(address).toScVal(),
+      nativeToScVal(cred.credentialId, { type: 'string' }),
+      nativeToScVal(cred.dataHash, { type: 'string' }),
+      nativeToScVal(cred.issueDate, { type: 'u64' })
+    ];
+    txBuilder = txBuilder.addOperation(contract.call("issue_credential", ...args));
+  }
+
+  const tx = txBuilder.setTimeout(300).build();
+
+  // Prepare the transaction using Soroban RPC
+  const preparedTx = await server.prepareTransaction(tx);
+  
+  // Ensure the wallet kit is initialized in this session before signing
+  try {
+    StellarWalletsKit.init({ modules: defaultModules() });
+  } catch (e) {} // Ignore if already initialized
+  StellarWalletsKit.setWallet('freighter');
+
+  // Sign the transaction using StellarWalletsKit
+  const response = await StellarWalletsKit.signTransaction(preparedTx.toXDR(), {
+    networkPassphrase,
+    address
+  });
+  
+  if (!response) throw new Error("Failed to sign transaction");
+  return response.signedTxXdr || (typeof response === 'string' ? response : (response as any).signedXDR);
+}
+
 /**
  * Submits the signed transaction to the Soroban RPC
  */

@@ -234,44 +234,77 @@ export default function IssuePage() {
   const handleBatchIssue = async () => {
     if (csvData.length === 0) return;
     setTxStatus('pending');
+    setTxError(null);
     
     try {
+      const { buildBatchIssueCredentialTx, submitContractTx } = await import("@/service/contract");
+
+      const credentialsToSign = [];
+      const recordsWithHashes = [];
+      const issueDate = Math.floor(Date.now() / 1000);
+
+      for (const record of csvData) {
+        const mergedData = { ...record, eventName, date: manualDate, issuerName, signature1Name: manualSig1Name, signature1Title: manualSig1Title, signature2Name: manualSig2Name, signature2Title: manualSig2Title, eventDetails: manualEventDetails, mode: manualMode, duration: manualDuration };
+        const dataString = JSON.stringify(mergedData);
+        
+        // Create hash
+        const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(dataString) as any);
+        const dataHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        const newId = `CX-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+        
+        credentialsToSign.push({
+          credentialId: newId,
+          dataHash: dataHash,
+          issueDate
+        });
+
+        recordsWithHashes.push({
+          ...record,
+          _generatedId: newId,
+          _dataHash: dataHash,
+          _dataString: dataString
+        });
+      }
+
+      // Build & Sign Batch
+      const signedTx = await buildBatchIssueCredentialTx(credentialsToSign);
+      
+      // Submit & Poll
+      setTxStatus('processing');
+      const response = await submitContractTx(signedTx);
+
+      // Save to Database
       const res = await fetch('/api/issue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           batchName: eventName,
-          records: csvData,
+          records: recordsWithHashes,
           templateId: "demo-template-id",
+          transactionHash: response.txHash,
+          organizationName,
+          issuerName: defaultIssuerName,
+          walletAddress: address,
           globalFields: {
-            eventName: eventName,
-            date: manualDate,
-            issuerName: issuerName,
-            signature1Name: manualSig1Name,
-            signature1Title: manualSig1Title,
-            signature2Name: manualSig2Name,
-            signature2Title: manualSig2Title,
-            eventDetails: manualEventDetails,
-            mode: manualMode,
-            duration: manualDuration
+            eventName, date: manualDate, issuerName,
+            signature1Name: manualSig1Name, signature1Title: manualSig1Title,
+            signature2Name: manualSig2Name, signature2Title: manualSig2Title,
+            eventDetails: manualEventDetails, mode: manualMode, duration: manualDuration
           }
         })
       });
       
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to generate batch");
+      if (!res.ok) throw new Error(data.error || "Failed to generate batch in DB");
       
-      console.log("Hashes to sign on-chain:", data.hashes);
-      
-      setTimeout(() => {
-        setIssueComplete(true);
-        setTxStatus('idle');
-      }, 1500);
+      setTxStatus('confirmed');
+      setIssueComplete(true);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Issuance failed: " + (error as Error).message);
-      setTxStatus('idle');
+      setTxError(error.message || "Failed to issue batch");
+      setTxStatus('failed');
     }
   };
 

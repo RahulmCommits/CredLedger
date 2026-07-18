@@ -5,7 +5,7 @@ import crypto from "crypto";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { batchName, templateId, organizationId, records, globalFields } = body;
+    const { batchName, templateId, organizationId, records, globalFields, transactionHash } = body;
 
     if (!batchName || !records || !Array.isArray(records)) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -60,23 +60,15 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    // Create Certificates in bulk, hashing their dynamic data
+    // Create Certificates in bulk using hashes and ids from client
     const certificatesToCreate = records.map((record: any) => {
-      // Merge CSV record with global fields from the UI
-      const mergedData = { ...globalFields, ...record };
-      
-      // Create a deterministic hash for this student's data (simulating Soroban payload)
-      const dataString = JSON.stringify(mergedData);
-      const hash = crypto.createHash("sha256").update(dataString).digest("hex");
-      
-      const niceId = `CX-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-
       return {
-        id: niceId,
+        id: record._generatedId,
         batchId: batch.id,
         recipientEmail: record.email || record.studentEmail || "unknown@example.com",
-        dynamicData: dataString,
-        dataHash: hash,
+        dynamicData: record._dataString,
+        dataHash: record._dataHash,
+        transactionHash: transactionHash || null,
         status: "Active"
       };
     });
