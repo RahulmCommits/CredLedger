@@ -55,6 +55,7 @@ model Certificate {
   recipientEmail String
   dynamicData    String           // JSON mapping CSV headers to values for this student
   dataHash       String           // SHA-256 hash stored on Soroban
+  transactionHash String?         // Stellar transaction hash
   status         String           @default("Active")
   issuedAt       DateTime         @default(now())
   
