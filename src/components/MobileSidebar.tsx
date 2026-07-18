@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Shield, LayoutTemplate, FileText, Settings, ArrowLeft, History, Activity, BarChart, Menu, X, User } from "lucide-react";
 import { CredLedgerLogo } from "@/components/CredLedgerLogo";
+import WalletConnect from "@/components/WalletConnect";
 
 export function MobileSidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,12 +32,14 @@ export function MobileSidebar() {
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between bg-pure-white border-b border-primary p-4 z-40 fixed top-0 w-full">
         <Link href="/" className="flex items-center gap-2 font-bold tracking-tight text-primary">
-          
           <CredLedgerLogo className="text-primary" />
         </Link>
-        <button onClick={toggleMenu} className="p-1 text-primary focus:outline-none">
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <WalletConnect />
+          <button onClick={toggleMenu} className="p-1 text-primary focus:outline-none">
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Overlay */}

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, QrCode, CloudLightning, Scan, Box, Cpu, FileText, Shield, Menu, X, LayoutDashboard, History, User } from "lucide-react";
+import { ArrowRight, ShieldCheck, QrCode, CloudLightning, Scan, Box, Cpu, FileText, Shield, Menu, X, LayoutDashboard, History, User, LayoutTemplate, Activity, BarChart } from "lucide-react";
 import WalletConnect from "@/components/WalletConnect";
 import { CredLedgerLogo } from "@/components/CredLedgerLogo";
 import { GlitchHash } from "@/components/GlitchHash";
@@ -97,8 +97,11 @@ export default function Home() {
               )}
               {isConnected && (
                 <>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-primary font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/issue"><LayoutDashboard className="w-5 h-5"/> Dashboard</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-on-surface-variant font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/history"><History className="w-5 h-5"/> History</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-primary font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/issue"><FileText className="w-5 h-5"/> Issue Credentials</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-on-surface-variant font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/templates/new"><LayoutTemplate className="w-5 h-5"/> Template Builder</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-on-surface-variant font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/history"><History className="w-5 h-5"/> Issued Credentials</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-on-surface-variant font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/activity"><Activity className="w-5 h-5"/> Activity Feed</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-on-surface-variant font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/analytics"><BarChart className="w-5 h-5"/> Analytics</Link>
                   <Link onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-on-surface-variant font-dot text-[18px] uppercase hover:text-pure-black transition-colors" href="/dashboard/settings"><User className="w-5 h-5"/> Profile</Link>
                 </>
               )}
