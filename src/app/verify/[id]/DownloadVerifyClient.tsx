@@ -76,22 +76,22 @@ export function DownloadVerifyClient({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 justify-center z-10 relative pt-4 border-t border-outline-variant/50">
+    <div className="flex flex-col sm:flex-row gap-5 justify-center z-10 relative pt-6 border-t border-slate-100">
       <a 
         href={stellarExpertUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-pure-white text-primary border-2 border-primary font-dot text-[14px] uppercase px-8 py-4 flex items-center justify-center gap-3 hover:bg-surface-bright transition-colors shadow-sm"
+        className="bg-white text-slate-700 border border-slate-200 font-hanken text-[15px] font-semibold tracking-wide px-8 py-4 rounded-xl flex items-center justify-center gap-3 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm"
       >
-        View on Stellar Explorer <ArrowRight className="w-4 h-4" />
+        View on Stellar Explorer <ArrowRight className="w-4 h-4 text-slate-400" />
       </a>
       
       <button 
         onClick={handleDownloadPDF}
         disabled={isGeneratingPdf}
-        className="bg-primary text-pure-white font-dot text-[14px] uppercase px-8 py-4 flex items-center justify-center gap-3 hover:bg-inverse-surface transition-colors shadow-sm disabled:opacity-50"
+        className="bg-slate-900 text-white font-hanken text-[15px] font-semibold tracking-wide px-8 py-4 rounded-xl flex items-center justify-center gap-3 hover:bg-slate-800 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
       >
-        {isGeneratingPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+        {isGeneratingPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-slate-300" />}
         {isGeneratingPdf ? "Generating..." : "Download Certificate PDF"}
       </button>
     </div>
