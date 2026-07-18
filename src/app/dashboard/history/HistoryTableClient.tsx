@@ -127,7 +127,7 @@ export function HistoryTableClient({ certificates }: { certificates: Certificate
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     <a 
-                      href={`http://localhost:3000/verify/${cert.id}`}
+                      href={`https://cred-ledger-three.vercel.app/verify/${cert.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#16a34a] flex items-center gap-1 font-dot text-[10px] uppercase hover:underline"

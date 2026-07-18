@@ -136,7 +136,7 @@ export const CertificateTemplate: React.FC<CertificateTemplateProps> = ({
             Scan this QR code or visit
             <br/>
             <a 
-              href={`http://localhost:3000/verify/${credentialId}`} 
+              href={`https://cred-ledger-three.vercel.app/verify/${credentialId}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               style={{ color: "#2563eb" }} 
@@ -148,7 +148,7 @@ export const CertificateTemplate: React.FC<CertificateTemplateProps> = ({
 
           <div style={{ backgroundColor: "#ffffff", borderColor: "#e5e7eb" }} className="w-32 h-32 border p-2 mb-4 rounded-lg shadow-sm flex items-center justify-center relative">
             <QRCode 
-              value={`http://localhost:3000/verify/${credentialId}`}
+              value={`https://cred-ledger-three.vercel.app/verify/${credentialId}`}
               size={110}
               fgColor="#0B2046"
               level="H"

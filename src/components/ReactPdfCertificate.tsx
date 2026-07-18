@@ -425,8 +425,8 @@ export const ReactPdfCertificate: React.FC<ReactPdfCertificateProps> = ({
           <Text style={styles.scanLabel}>SCAN TO VERIFY</Text>
           <Text style={styles.scanDesc}>
             Scan this QR code or visit{"\n"}
-            <Link src={`http://localhost:3000/verify/${credentialId}`} style={styles.scanLink}>
-              localhost:3000/verify
+            <Link src={`https://cred-ledger-three.vercel.app/verify/${credentialId}`} style={styles.scanLink}>
+              cred-ledger-three.vercel.app/verify
             </Link>
           </Text>
           <View style={styles.qrCodeBox}>
