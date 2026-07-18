@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { CertificateTemplate } from "@/components/CertificateTemplate";
 import { ArrowRight, Loader2, UploadCloud, Users, FileText, CheckCircle, Plus, X, Type, ExternalLink } from "lucide-react";
 import html2canvas from "html2canvas";

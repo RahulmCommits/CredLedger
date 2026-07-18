@@ -33,14 +33,7 @@ export default async function HistoryPage() {
             </p>
           </div>
           <div className="flex gap-4">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-outline" />
-              <input 
-                type="text" 
-                placeholder="SEARCH CREDENTIALS..." 
-                className="pl-9 pr-4 py-2 border-2 border-pure-black bg-pure-white font-dot text-[12px] uppercase outline-none focus:bg-surface-bright transition-colors w-64"
-              />
-            </div>
+            {/* Search box moved to HistoryTableClient */}
           </div>
         </div>
 

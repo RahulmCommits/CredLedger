@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { ExternalLink, Loader2, Download } from 'lucide-react';
+import { ExternalLink, Loader2, Download, Search } from 'lucide-react';
 import { pdf } from '@react-pdf/renderer';
 import { ReactPdfCertificate } from '@/components/ReactPdfCertificate';
 import QRCode from 'qrcode';
@@ -87,8 +87,40 @@ export function HistoryTableClient({ certificates }: { certificates: Certificate
     }
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredCertificates = certificates.filter(cert => {
+    const q = searchQuery.toLowerCase();
+    let dynamicInfo = { name: "", eventName: "" };
+    try {
+      dynamicInfo = { ...dynamicInfo, ...JSON.parse(cert.dynamicData) };
+    } catch (e) {}
+
+    return (
+      cert.id.toLowerCase().includes(q) ||
+      cert.recipientEmail.toLowerCase().includes(q) ||
+      dynamicInfo.name.toLowerCase().includes(q) ||
+      dynamicInfo.eventName.toLowerCase().includes(q)
+    );
+  });
+
   return (
-    <div className="bg-pure-white border-2 border-pure-black border-b-8 border-r-8 shadow-sm overflow-x-auto">
+    <div className="space-y-4">
+      {/* Active Search Bar */}
+      <div className="flex justify-end mb-4">
+        <div className="relative w-full md:w-auto">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-outline" />
+          <input 
+            type="text" 
+            placeholder="SEARCH CREDENTIALS..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 pr-4 py-2 border-2 border-pure-black bg-pure-white font-dot text-[12px] uppercase outline-none focus:bg-surface-bright transition-colors w-full md:w-64"
+          />
+        </div>
+      </div>
+
+      <div className="bg-pure-white border-2 border-pure-black border-b-8 border-r-8 shadow-sm overflow-x-auto">
       <table className="w-full text-left border-collapse">
         <thead>
           <tr className="bg-surface-bright border-b-2 border-pure-black">
@@ -100,7 +132,7 @@ export function HistoryTableClient({ certificates }: { certificates: Certificate
           </tr>
         </thead>
         <tbody>
-          {certificates.map((cert, i) => {
+          {filteredCertificates.map((cert, i) => {
             let dynamicInfo = { name: "Unknown", eventName: "Unknown", type: "Unknown" };
             try {
               dynamicInfo = { ...dynamicInfo, ...JSON.parse(cert.dynamicData) };
@@ -150,6 +182,13 @@ export function HistoryTableClient({ certificates }: { certificates: Certificate
           })}
         </tbody>
       </table>
+      
+      {filteredCertificates.length === 0 && certificates.length > 0 && (
+        <div className="p-8 text-center text-on-surface-variant font-mono text-[12px]">
+          No matching credentials found for "{searchQuery}"
+        </div>
+      )}
+      </div>
     </div>
   );
 }

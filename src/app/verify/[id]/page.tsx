@@ -78,7 +78,6 @@ export default async function VerifyPage({ params }: { params: Promise<{ id: str
               Verified on Blockchain
             </div>
           </div>
-          </div>
 
           <div className="text-center mb-14 z-10 relative">
             <h1 className="font-playfair text-[36px] md:text-[52px] leading-tight text-slate-900 font-bold mb-4">
