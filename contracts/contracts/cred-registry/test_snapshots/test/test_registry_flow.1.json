@@ -185,7 +185,7 @@
                       "key": {
                         "vec": [
                           {
-                            "symbol": "CertifierContract"
+                            "symbol": "CredIssuerContract"
                           }
                         ]
                       },
