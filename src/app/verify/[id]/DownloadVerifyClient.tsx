@@ -57,7 +57,6 @@ export function DownloadVerifyClient({
             signature2Name: dynamicData.signature2Name || "Event Coordinator",
             signature2Title: dynamicData.signature2Title || "Coordinator",
           }}
-          theme="light"
         />
       ).toBlob();
       

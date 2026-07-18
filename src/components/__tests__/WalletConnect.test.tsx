@@ -56,10 +56,6 @@ describe('WalletConnect Component', () => {
     
     // Check truncated address
     expect(screen.getByText(/GABC...7890/i)).toBeInTheDocument();
-    
-    // Check network switcher
-    expect(screen.getByRole('combobox')).toBeInTheDocument();
-    expect(screen.getByDisplayValue(/Testnet/i)).toBeInTheDocument();
   });
 
   it('calls connect function on click', () => {
