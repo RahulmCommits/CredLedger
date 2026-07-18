@@ -9,6 +9,7 @@
 [![Soroban](https://img.shields.io/badge/Smart_Contracts-Soroban-orange)](https://soroban.stellar.org/)
 
   <h3>🚀 Live Production Deployment: <a href="https://cred-ledger-three.vercel.app/">https://cred-ledger-three.vercel.app/</a></h3>
+  <h3>🎥 Video Walkthrough: <a href="https://youtu.be/_7xV6pcz-0s">https://youtu.be/_7xV6pcz-0s</a></h3>
 
 ![Hero Dashboard](./demo/img/Hero-wallet-connected.png)
 
