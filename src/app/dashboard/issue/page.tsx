@@ -31,6 +31,7 @@ export default function IssuePage() {
   const [issuerName, setIssuerName] = useState("Stellar Community");
   const [txStatus, setTxStatus] = useState<'idle' | 'pending' | 'processing' | 'confirmed' | 'failed'>('idle');
   const [txError, setTxError] = useState<string | null>(null);
+  const [batchProgress, setBatchProgress] = useState({ current: 0, total: 0 });
   const [issueComplete, setIssueComplete] = useState(false);
   const [previewIndex, setPreviewIndex] = useState(0);
 
@@ -237,18 +238,48 @@ export default function IssuePage() {
     setTxError(null);
     
     try {
-      const { buildBatchIssueCredentialTx, submitContractTx } = await import("@/service/contract");
+      const { buildIssueCredentialTx, submitContractTx } = await import("@/service/contract");
 
-      // Soroban Limitation: We cannot put multiple InvokeHostFunctionOps in a single transaction.
-      // And we don't want to spam the user with 8 Freighter popups.
-      // So for now, batch issuance is "simulated" off-chain (saved to DB only).
+      const recordsWithHashes = [];
+      const issueDate = Math.floor(Date.now() / 1000);
+      setBatchProgress({ current: 0, total: csvData.length });
+
+      // We issue them sequentially on-chain since Soroban doesn't support multiple InvokeHostFunctionOps per transaction currently
+      for (let i = 0; i < csvData.length; i++) {
+        setBatchProgress({ current: i + 1, total: csvData.length });
+        const record = csvData[i];
+        
+        const mergedData = { ...record, eventName, date: manualDate, issuerName, signature1Name: manualSig1Name, signature1Title: manualSig1Title, signature2Name: manualSig2Name, signature2Title: manualSig2Title, eventDetails: manualEventDetails, mode: manualMode, duration: manualDuration };
+        const dataString = JSON.stringify(mergedData);
+        
+        // Create hash
+        const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(dataString) as any);
+        const dataHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        const newId = `CX-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+        // 1. Prompt Wallet
+        const signedTx = await buildIssueCredentialTx(newId, dataHash, issueDate);
+        
+        // 2. Submit to Soroban RPC
+        const response = await submitContractTx(signedTx);
+
+        recordsWithHashes.push({
+          ...record,
+          _generatedId: newId,
+          _dataHash: dataHash,
+          _dataString: dataString,
+          _txHash: response.txHash
+        });
+      }
       
+      setTxStatus('processing');
+      // Save all to Database
       const res = await fetch('/api/issue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           batchName: eventName,
-          records: csvData,
+          records: recordsWithHashes,
           templateId: "demo-template-id",
           organizationName,
           issuerName: defaultIssuerName,
@@ -265,12 +296,9 @@ export default function IssuePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to generate batch in DB");
       
-      // Simulate processing delay
-      setTxStatus('processing');
-      setTimeout(() => {
-        setTxStatus('confirmed');
-        setIssueComplete(true);
-      }, 1500);
+      setTxStatus('confirmed');
+      setIssueComplete(true);
+      setBatchProgress({ current: 0, total: 0 });
 
     } catch (error: any) {
       console.error(error);
@@ -672,8 +700,8 @@ export default function IssuePage() {
               <div className="mt-6">
                 {txStatus !== 'idle' && (
                   <div className="mb-4 space-y-2 text-sm font-mono p-4 border border-outline-variant bg-surface-container-lowest">
-                    {txStatus === 'pending' && <p className="text-primary animate-pulse">Wallet signature pending...</p>}
-                    {txStatus === 'processing' && <p className="text-[#9333EA] animate-pulse">Processing on Soroban RPC...</p>}
+                    {txStatus === 'pending' && <p className="text-primary animate-pulse">Waiting for Wallet Signature ({batchProgress.current} of {batchProgress.total})...</p>}
+                    {txStatus === 'processing' && <p className="text-[#9333EA] animate-pulse">Saving {batchProgress.total} records to database...</p>}
                     {txStatus === 'failed' && (
                       <div className="text-signal-red">
                         <p>✖ Failed: {txError}</p>
@@ -692,7 +720,7 @@ export default function IssuePage() {
                    (txStatus === 'pending' || txStatus === 'processing') ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      {txStatus === 'pending' ? 'SIGNING' : 'ISSUING'} {csvData.length} CREDENTIALS
+                      {txStatus === 'pending' ? `SIGNING ${batchProgress.current} OF ${batchProgress.total}` : `SAVING ${batchProgress.total} TO DB`}
                     </>
                   ) : (
                     <>
