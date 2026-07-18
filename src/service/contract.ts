@@ -1,6 +1,7 @@
 import { Horizon, Keypair, TransactionBuilder, Networks, Contract, xdr, rpc, Address, nativeToScVal } from '@stellar/stellar-sdk';
 import { useWalletStore } from '@/store/wallet';
 import { StellarWalletsKit } from '@creit.tech/stellar-wallets-kit/sdk';
+import { defaultModules } from '@creit.tech/stellar-wallets-kit/modules/utils';
 
 const rpcUrl = process.env.NEXT_PUBLIC_SOROBAN_RPC_URL || 'https://soroban-testnet.stellar.org';
 const networkPassphrase = Networks.TESTNET;
@@ -38,6 +39,12 @@ export async function buildIssueCredentialTx(
   // Prepare the transaction using Soroban RPC (simulates and adds footprint/resources)
   const preparedTx = await server.prepareTransaction(tx);
   
+  // Ensure the wallet kit is initialized in this session before signing
+  try {
+    StellarWalletsKit.init({ modules: defaultModules() });
+  } catch (e) {} // Ignore if already initialized
+  StellarWalletsKit.setWallet('freighter');
+
   // Sign the transaction using StellarWalletsKit
   const response = await StellarWalletsKit.signTransaction(preparedTx.toXDR(), {
     networkPassphrase,

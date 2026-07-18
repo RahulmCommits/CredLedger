@@ -8,7 +8,7 @@
 [](https://stellar.org/)
 [](https://soroban.stellar.org/)
 
-  <h3>🚀 Live Production Deployment: <a href="[Pending Deployment]">[Pending Deployment]</a></h3>
+  <h3>🚀 Live Production Deployment: <a href="https://cred-ledger-three.vercel.app">cred-ledger-three.vercel.app</a></h3>
   <h3>🎥 Video Walkthrough: <a href="[Pending Video]">[Pending Video]</a></h3>
 
 
@@ -167,7 +167,7 @@ credledger-workspace/
 
 ## 🛡️ Contract Addresses & Verifiable Links
 
-*   **Verifiable Live App**: [[Pending Deployment]]([Pending Deployment])
+*   **Verifiable Live App**: [https://cred-ledger-three.vercel.app](https://cred-ledger-three.vercel.app)
 *   **Credential Issuer Contract**: [`CAVVAP4TR4O7YJ7HRO6Y4ZA3VLWQN2Q3PPAR3KM525W53TZAD3C7PFRA`](https://stellar.expert/explorer/testnet/contract/CAVVAP4TR4O7YJ7HRO6Y4ZA3VLWQN2Q3PPAR3KM525W53TZAD3C7PFRA)
 *   **Global Registry Contract**: [`CD4QVW5BLFJU7ZELFVAVZJO3O4GDE3DEYZM5HN5MMMU7D62FLEAPEPIJ`](https://stellar.expert/explorer/testnet/contract/CD4QVW5BLFJU7ZELFVAVZJO3O4GDE3DEYZM5HN5MMMU7D62FLEAPEPIJ)
 *   **Network**: Stellar Testnet
