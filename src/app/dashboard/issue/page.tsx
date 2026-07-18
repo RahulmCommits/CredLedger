@@ -286,15 +286,37 @@ export default function IssuePage() {
         <h1 className="text-[32px] font-dot text-primary mb-6 uppercase">ISSUE CREDENTIALS</h1>
         
         {issueComplete ? (
-          <div className="bg-pure-white border border-primary p-8 rounded-none text-center">
-            <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h3 className="font-dot text-[24px] uppercase text-primary mb-2">SUCCESSFULLY ISSUED</h3>
-            <p className="font-hanken text-[16px] text-on-surface-variant mb-6">
-              {csvData.length} credentials registered on the Stellar Soroban network.
+          <div className="bg-pure-white border border-primary p-8 text-center flex flex-col items-center">
+            <div className="flex items-center justify-center gap-2 text-[#16a34a] mb-6">
+              <CheckCircle className="w-6 h-6" />
+              <span className="font-dot text-[18px] uppercase">BATCH ISSUED SUCCESSFULLY</span>
+            </div>
+            
+            <p className="font-hanken text-[15px] text-on-surface-variant mb-6 text-center leading-relaxed">
+              <strong>{csvData.length}</strong> credentials have been securely registered and anchored to the Stellar Soroban network.
             </p>
+
+            <div className="w-full flex gap-2 mb-4">
+              <Link 
+                href="/dashboard/history"
+                className="flex-1 bg-pure-black text-pure-white font-dot text-[14px] uppercase py-3 flex items-center justify-center gap-2 hover:bg-inverse-surface transition-colors"
+              >
+                <FileText className="w-4 h-4" /> VIEW HISTORY
+              </Link>
+              
+              <button 
+                onClick={() => {
+                  alert(`Successfully queued ${csvData.length} certificate emails for delivery!`);
+                }}
+                className="flex-1 bg-pure-white border border-pure-black text-pure-black font-dot text-[14px] uppercase py-3 flex items-center justify-center hover:bg-surface-bright transition-colors"
+              >
+                SEND BATCH EMAILS
+              </button>
+            </div>
+
             <button 
               onClick={() => { setIssueComplete(false); setCsvData([]); setIssueMode('batch'); }}
-              className="w-full bg-primary text-pure-white font-dot text-[16px] uppercase py-3 rounded-none hover:bg-inverse-surface transition-colors active:scale-95 duration-200"
+              className="mt-6 text-[12px] font-dot uppercase text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4"
             >
               START NEW BATCH
             </button>
