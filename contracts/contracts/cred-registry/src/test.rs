@@ -47,3 +47,29 @@ fn test_registry_flow() {
     let revoked = client.verify_credential(&cred_id).unwrap();
     assert_eq!(revoked.is_revoked, true);
 }
+
+#[test]
+#[should_panic(expected = "Only the original issuer can revoke")]
+fn test_unauthorized_revoke() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let certifier_id = env.register_contract(None, MockCertifier);
+    let contract_id = env.register_contract(None, CredentialRegistry);
+    let client = CredentialRegistryClient::new(&env, &contract_id);
+
+    let admin = Address::generate(&env);
+    let issuer = Address::generate(&env);
+    let hacker = Address::generate(&env);
+
+    client.init(&admin, &certifier_id);
+
+    let cred_id = String::from_str(&env, "CRD-002");
+    let data_hash = String::from_str(&env, "hack123hash");
+    let issue_date = 1670000000;
+
+    client.issue_credential(&issuer, &cred_id, &data_hash, &issue_date);
+
+    // Hacker tries to revoke, should panic
+    client.revoke_credential(&hacker, &cred_id);
+}
