@@ -38,6 +38,8 @@ export async function buildIssueCredentialTx(
     .build();
 
   // Prepare the transaction using Soroban RPC (simulates and adds footprint/resources)
+  const preparedTx = await server.prepareTransaction(tx);
+  
   // Ensure the wallet kit is initialized in this session before signing
   try {
     StellarWalletsKit.init({ modules: defaultModules() });
