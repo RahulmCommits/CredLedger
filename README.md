@@ -55,7 +55,7 @@
 | **Deployment Workflow** | ✅ Automated `deploy.sh` script provided for testnet deployment |
 | **Mobile Responsive** | ✅ Complex dashboards, sidebars, and navigation perfectly optimized for mobile |
 | **Error & Loading States** | ✅ Rich UX loading states (Zustand), transaction lifecycle UI (pending/processing/confirmed/failed), and Toast notifications |
-| **Testing Suite** | ✅ 6 Vitest frontend tests passing + 2 Rust smart contract unit tests passing |
+| **Testing Suite** | ✅ 8 Vitest frontend tests passing + 3 Rust smart contract unit tests passing |
 | **Production Architecture**| ✅ Built on Next.js 16 App Router, Prisma PostgreSQL ORM, Zustand, and Tailwind CSS |
 | **Documentation** | ✅ Comprehensive professional README with architecture diagrams and contract details |
 | **Required Deliverables** | ✅ Video Demo, Mobile/CI screenshots, Contract IDs & Hash, 3+ passing tests |
@@ -269,10 +269,13 @@ The contracts have been successfully deployed and initialized on the Stellar Tes
 </div>
 
 ### 🧪 Automated Testing Suite
-*Comprehensive frontend testing using Vitest + React Testing Library ensures platform stability. We test Providers, CertificateTemplate, and WalletConnect components.*
-**(✅ Ensuring Stability with 6 Passing Frontend Tests + 2 Rust Contract Tests)**
+*Comprehensive testing ensures platform stability. Our suite includes 8 frontend tests (Vitest + React Testing Library + Integration) and 3 Rust Soroban contract tests.*
+**(✅ Ensuring Stability with 8 Passing Frontend Tests + 3 Rust Contract Tests)**
 <div align="center">
-  <img src="demo/img/passed-test.png" alt="Test Suite" width="800"/>
+  <img src="demo/img/test-1.png" alt="Frontend Test Suite" width="800"/>
+  <br/>
+  <br/>
+  <img src="demo/img/test-2-contracts.png" alt="Contract Test Suite" width="800"/>
 </div>
 
 ### 🚀 CI/CD Pipeline
@@ -334,10 +337,10 @@ npm run dev
 
 ### Running Tests
 ```bash
-# Frontend Tests (Vitest — 6 passing tests)
+# Frontend Tests (Vitest — 8 passing tests)
 npm run test
 
-# Smart Contract Tests (Cargo — 2 passing tests)
+# Smart Contract Tests (Cargo — 3 passing tests)
 npm run test:contracts
 ```
 
@@ -366,7 +369,7 @@ Our dual pipeline runs automatically on every push to `main` and on every PR:
    - Sets up Node.js v20 with npm cache
    - Installs NPM dependencies
    - Runs ESLint for code quality
-   - Runs Vitest suite (6 tests)
+   - Runs Vitest suite (8 tests)
    - Builds Next.js application
 
 ### Vercel Deployment
